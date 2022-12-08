@@ -1,0 +1,1 @@
+A basic javascript project for the Odin Project.
