@@ -1,3 +1,11 @@
+const rockBtn = document.querySelector("#rock");
+const paperBtn = document.querySelector("#paper");
+const scissorsBtn = document.querySelector("#scissors");
+let playerResult = document.querySelector("#player-result");
+let computerResult = document.querySelector("#computer-result");
+let playerFinalResult = document.querySelector("#player-final-result");
+let computerFinalResult = document.querySelector("#computer-final-result");
+
 function getRandomInt(max) {
   // returns randomly one of 0, 1,... max-1
   return Math.floor(Math.random() * max);
@@ -12,82 +20,66 @@ function getComputerChoice() {
   return choice;
 }
 
-function stringNormalize(str) {
-  let normalizedStr;
-
-  normalizedStr = str.toLowerCase();
-  normalizedStr =
-    normalizedStr.slice(0, 1).toUpperCase() + normalizedStr.slice(1);
-
-  return normalizedStr;
-}
-
 function playRound(playerSelection, computerSelection) {
-  const playerSelectionCI = stringNormalize(playerSelection);
+  if (
+    playerFinalResult.innerText === "5" ||
+    computerFinalResult.innerText === "5"
+  )
+    return;
 
-  if (playerSelectionCI === computerSelection) return "Tie!";
+  if (playerSelection === computerSelection) {
+    playerResult.innerText = "tie " + playerSelection;
+    computerResult.innerText = "tie " + computerSelection;
+    return;
+  }
 
-  switch (playerSelectionCI) {
+  switch (playerSelection) {
     case "Rock":
       switch (computerSelection) {
         case "Paper":
-          return "You lose! Paper beats Rock.";
+          playerResult.innerText = "0 Rock";
+          computerResult.innerText = "1 Paper";
+          computerFinalResult.innerText++;
+          return;
         case "Scissors":
-          return "You win! Rock beats Scissors.";
-        default:
-          return "Wrong input!";
+          playerResult.innerText = "1 Rock";
+          computerResult.innerText = "0 Scissors";
+          playerFinalResult.innerText++;
+          return;
       }
     case "Paper":
       switch (computerSelection) {
         case "Rock":
-          return "You win! Paper beats Rock.";
+          playerResult.innerText = "1 Paper";
+          computerResult.innerText = "0 Rock";
+          playerFinalResult.innerText++;
+          return;
         case "Scissors":
-          return "You lose! Scissors beats Paper.";
-        default:
-          return "Wrong input!";
+          playerResult.innerText = "0 Paper";
+          computerResult.innerText = "1 Scissors";
+          computerFinalResult.innerText++;
+          return;
       }
     case "Scissors":
       switch (computerSelection) {
         case "Paper":
-          return "You win! Scissors beats Paper.";
+          playerResult.innerText = "1 Scissors";
+          computerResult.innerText = "0 Paper";
+          playerFinalResult.innerText++;
+          return;
         case "Rock":
-          return "You lose! Rock beats Scissors.";
-        default:
-          return "Wrong input!";
+          playerResult.innerText = "0 Scissors";
+          computerResult.innerText = "1 Rock";
+          computerFinalResult.innerText++;
+          return;
       }
-    default:
-      return "Wrong input!";
   }
 }
 
-function game() {
-  let playerWins = 0;
-  let computerWins = 0;
-
-  for (let i = 0; i < 5; i++) {
-    let playerSelection = prompt(
-      "What do you choose? Rock, Paper or Scissors?"
-    );
-    const computerSelection = getComputerChoice();
-    let result = playRound(playerSelection, computerSelection);
-
-    while (result === "Wrong input!") {
-      playerSelection = prompt("Wrong input! Rock, Paper or Scissors?");
-      result = playRound(playerSelection, computerSelection);
-    }
-
-    if (result.slice(4, 7) === "win") {
-      playerWins++;
-    } else if (result.slice(4, 8) === "lose") {
-      computerWins++;
-    }
-  }
-
-  if (playerWins > computerWins) {
-    return `You win! You: ${playerWins} | PC: ${computerWins}`;
-  } else if (playerWins < computerWins) {
-    return `You lose! You: ${playerWins} | PC: ${computerWins}`;
-  } else {
-    return `Tie! You: ${playerWins} | PC: ${computerWins}`;
-  }
-}
+rockBtn.addEventListener("click", () => playRound("Rock", getComputerChoice()));
+paperBtn.addEventListener("click", () =>
+  playRound("Paper", getComputerChoice())
+);
+scissorsBtn.addEventListener("click", () =>
+  playRound("Scissors", getComputerChoice())
+);
