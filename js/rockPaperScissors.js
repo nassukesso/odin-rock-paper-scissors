@@ -1,5 +1,5 @@
 function getRandomInt(max) {
-  //returns randomly one of 0, 1,... max-1
+  // returns randomly one of 0, 1,... max-1
   return Math.floor(Math.random() * max);
 }
 
